@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="csrf-param" content="{{.csrfToken}}">
+    <meta name="csrf-token" content="{{.csrfKey}}">
+
+    <title>同心计费系统</title>
+    <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/bootstrap-theme.min.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/main.css" />
+    <link rel="shortcut icon" type="image/x-icon" media="screen" href="/static/img/tongxin_sm.png" />
+    <script type="text/javascript" src="/static/js/jquery-3.1.1.js"></script>
+    <script type="text/javascript" src="/static/js/bootstrap.min.js"></script>
+
+
+    <style type="text/css">
+        body {
+            background-image: url("/static/img/bg-old.jpg");
+            background-size: cover;
+        }
+        
+        .panel_container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .login_panel {
+            width: 350px;
+            height: 400px;
+            background-color: rgba(255, 255, 255, 0.5);
+        }
+        
+        .icon {
+            width: 20px;
+            height: 20px;
+        }
+        
+        .content_body {
+            background-color: rgba(255, 255, 255, 0.5) !important;
+        }
+        
+        .btn_logon {
+            background-color: rgb(91, 161, 219);
+        }
+        
+        .input_with_icon {
+            padding-left: 36px;
+        }
+        
+        .div_icon {
+            background-color: #888888;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .input_icon {
+            width: 20px;
+            height: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container-fluid div_content panel_container">
+        <div class="panel panel-default login_panel">
+            <div class="panel-heading">
+                登录系统
+            </div>
+            <div class="panel-body">
+                <form method="post" action="/logon" class="form-horizontal">
+                    <input type="hidden" name="{{.csrfToken}}" value="{{.csrfKey}}" />
+                    <div class="form-group">
+                        <div class="col-sm-12">
+                            {{.errorMsg}}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-12">
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                        <img class="input_icon" src="/static/img/account.png" />
+                                    </span>
+                                <input id="tx_username" type="name" placeholder="用户名" class="form-control" required="required" name="tx_username">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-12">
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                        <img class="input_icon" src="/static/img/security.png" />
+                                    </span>
+                                <input id="tx_password" placeholder="密码" class="form-control" required="required" type="password" name="tx_password">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-6">
+                            <div class="input-group">
+                                <input id="tx_captchavalue" placeholder="验证码" class="form-control" required="required" type="text" name="tx_captchavalue">
+                                <input type=hidden name="tx_captchaid" value="{{.captchaID}}">
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <img id="image" src="/captcha/{{.captchaID}}.png" alt="Captcha image" style="width: 140px;height: 35px;" />
+                        </div>
+                    </div>
+                    <div class="form-group last">
+                        <div class="col-sm-12">
+                            <input type="submit" id="btn_login" name="btn_login" value="登录" class="btn btn-primary btn-sm btn-block" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
