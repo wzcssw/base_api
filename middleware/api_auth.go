@@ -2,9 +2,9 @@ package mw
 
 import (
 	"fmt"
-	"rbapi/models"
-	"rbapi/util"
 	"strings"
+	"tx_base_api/models"
+	"tx_base_api/util"
 
 	"github.com/labstack/echo"
 )
@@ -55,22 +55,18 @@ func (a *APIAuth) CanPass(next echo.HandlerFunc) echo.HandlerFunc {
 // BaseValidate 基础验证
 func (a *APIAuth) BaseValidate(c echo.Context) (flag bool, result map[string]interface{}) {
 	fmt.Printf("===============>in BaseValidate \n")
-	fmt.Printf("===============>params is %v\n", Param("app_key"))
-	timeStamp := Param("timestamp")
-	appKey := Param("app_key")
+	fmt.Printf("===============>params is %v\n", util.GetParam(c, "app_key"))
+	result = map[string]interface{}{}
+	timeStamp := util.GetParam(c, "timestamp")
+	appKey := util.GetParam(c, "app_key")
 	if timeStamp == "" || appKey == "" {
 		flag = false
 		result["error"] = "时间戳或者appkey不存在"
 		return
 	}
 	fmt.Printf("===============>timeStamp is %s,and appKey is %s\n", timeStamp, appKey)
-	sign := Param("sign")
-	params := map[string]string{}
-	paramsNames := c.ParamNames()
-	paramsValues := c.ParamValues()
-	for i, p := range paramsNames {
-		params[p] = paramsValues[i]
-	}
+	sign := util.GetParam(c, "sign")
+	params := util.GetParamNames(c)
 	var appToken models.AppToken
 	models.Mdb.First(&appToken, "app_key = ?", appKey)
 	if appToken.ID == 0 {
@@ -96,7 +92,8 @@ func (a *APIAuth) BaseValidate(c echo.Context) (flag bool, result map[string]int
 
 // UserValidate 登录验证
 func (a *APIAuth) UserValidate(c echo.Context) (flag bool, result map[string]interface{}) {
-	accessToken := c.Param("access_token")
+	result = map[string]interface{}{}
+	accessToken := util.GetParam(c, "access_token")
 	fmt.Printf("===============>access_token is %s\n", accessToken)
 	if accessToken == "" {
 		flag = false
